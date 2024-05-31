@@ -18,20 +18,22 @@
 #include <jni.h>
 #include <string>
 
-extern "C" {
-    JNIEXPORT jstring JNICALL
-Java_com_randstad_carsenze_MainActivity_memoryInfo(JNIEnv* env,jobject /* this */) {
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_randstad_carsenze_CarSenzeService_memoryInfo(JNIEnv *env, jclass clazz) {
     std::string hello = "MEM 54GB";
     return env->NewStringUTF(hello.c_str());
 }
- JNIEXPORT jstring JNICALL
-Java_com_randstad_carsenze_MainActivity_cpuInfo(JNIEnv* env,jobject /* this */) {
-    std::string hello = "CPU 92%";
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_randstad_carsenze_CarSenzeService_cpuInfo(JNIEnv *env, jclass clazz) {
+    std::string hello = "CPU 50%";
     return env->NewStringUTF(hello.c_str());
 }
- JNIEXPORT jstring JNICALL
-Java_com_randstad_carsenze_MainActivity_networkStat(JNIEnv* env,jobject /* this */) {
-    std::string hello = "10 Mb/s";
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_randstad_carsenze_CarSenzeService_networkStat(JNIEnv *env, jclass clazz) {
+    std::string hello = "N/W 20mbps";
     return env->NewStringUTF(hello.c_str());
-}
 }
