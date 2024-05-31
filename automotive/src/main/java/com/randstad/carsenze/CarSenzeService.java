@@ -6,6 +6,17 @@ import android.os.IBinder;
 import android.os.RemoteException;
 
 public class CarSenzeService extends Service {
+
+    static {
+        System.loadLibrary("carsenze");
+    }
+
+    public static native String memoryInfo();
+    public static native String cpuInfo();
+    public static native String networkStat();
+
+
+
     public CarSenzeService() {
     }
 
@@ -19,17 +30,17 @@ public class CarSenzeService extends Service {
 
         @Override
         public String getCpuStats() throws RemoteException {
-            return "";
+            return cpuInfo();
         }
 
         @Override
         public String getMemoryStats() throws RemoteException {
-            return "";
+            return memoryInfo();
         }
 
         @Override
         public String getNetworkStats() throws RemoteException {
-            return "";
+            return networkStat();
         }
     };
 }
