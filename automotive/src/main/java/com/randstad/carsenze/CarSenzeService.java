@@ -15,15 +15,12 @@ public class CarSenzeService extends Service {
     public static native String cpuInfo();
     public static native String networkStat();
 
-
-
     public CarSenzeService() {
     }
 
     @Override
     public IBinder onBind(Intent intent) {
           return Binder;
-              /*throw new UnsupportedOperationException("Not yet implemented");*/
     }
     private final IStatsService.Stub Binder= new  IStatsService.Stub(){
 
