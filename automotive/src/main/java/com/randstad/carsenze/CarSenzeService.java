@@ -11,7 +11,25 @@ public class CarSenzeService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-
-            throw new UnsupportedOperationException("Not yet implemented");
+          return Binder;
+              /*throw new UnsupportedOperationException("Not yet implemented");*/
     }
+    private final IStatsService.Stub Binder= new  IStatsService.Stub(){
+
+
+        @Override
+        public String getCpuStats() throws RemoteException {
+            return "";
+        }
+
+        @Override
+        public String getMemoryStats() throws RemoteException {
+            return "";
+        }
+
+        @Override
+        public String getNetworkStats() throws RemoteException {
+            return "";
+        }
+    };
 }
