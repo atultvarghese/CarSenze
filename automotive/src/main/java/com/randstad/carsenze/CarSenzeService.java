@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class CarSenzeService extends Service {
 
@@ -27,6 +28,7 @@ public class CarSenzeService extends Service {
 
         @Override
         public String getCpuStats() throws RemoteException {
+            Log.e("myTag",cpuInfo());
             return cpuInfo();
         }
 
