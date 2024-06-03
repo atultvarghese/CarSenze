@@ -11,7 +11,6 @@
         android:id="@+id/memory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
         android:text="Mem : 1GB "
         app:layout_constraintBaseline_toBaselineOf="@+id/cpu"
         app:layout_constraintEnd_toStartOf="@+id/cpu"
@@ -21,7 +20,7 @@
         android:id="@+id/cpu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="91dp"
         android:layout_marginEnd="20dp"
         android:text="CPU : 30 %"
         app:layout_constraintEnd_toStartOf="@+id/network"
@@ -32,7 +31,7 @@
         android:id="@+id/network"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="5dp"
         android:text="Network : 10mbps"
         app:layout_constraintBaseline_toBaselineOf="@+id/cpu"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,9 +41,19 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="90dp"
         android:text="Refresh"
-        app:layout_constraintStart_toStartOf="@+id/cpu"
-        app:layout_constraintTop_toBottomOf="@+id/cpu" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/MemoryUsage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/MemoryUsage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="227dp"
+        android:text="TextView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
