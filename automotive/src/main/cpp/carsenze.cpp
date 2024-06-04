@@ -1,20 +1,4 @@
-// Write C++ code here.
-//
-// Do not forget to dynamically load the C++ library into your application.
-//
-// For instance,
-//
-// In MainActivity.java:
-//    static {
-//       System.loadLibrary("carsenze");
-//    }
-//
-// Or, in MainActivity.kt:
-//    companion object {
-//      init {
-//         System.loadLibrary("carsenze")
-//      }
-//    }
+
 #include <jni.h>
 #include <string>
 #include <fstream>
@@ -36,6 +20,17 @@ void readCpuTimes(long long int &idleTime, long long int &totalTime) {
     idleTime = idle + iowait;
     totalTime = user + nice + system + idle + iowait + irq + softirq + steal;
 }
+
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <unistd.h>
+#include <ifaddrs.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <sys/sysinfo.h>
 
 
 extern "C"
@@ -88,9 +83,56 @@ Java_com_randstad_carsenze_CarSenzeService_cpuInfo(JNIEnv *env, jclass clazz) {
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_randstad_carsenze_CarSenzeService_networkStat(JNIEnv *env, jclass clazz) {
-    std::string hello = "N/W 20mbps";
-    return env->NewStringUTF(hello.c_str());
+Java_com_randstad_carsenze_CarSenzeService_getNetworkStats(JNIEnv *env, jclass clazz,jstring interfaceName) {
+   // _jstring *interfaceName = (_jstring *) "wlan0";
+    const char *interface = env->GetStringUTFChars(interfaceName, nullptr);
+    std::ifstream rxFile, txFile;
+    std::string rxPath = "/sys/class/net/" + std::string(interface) + "/statistics/rx_bytes";
+    std::string txPath = "/sys/class/net/" + std::string(interface) + "/statistics/tx_bytes";
+    long long rxBytesStart = 0, txBytesStart = 0;
+    long long rxBytesEnd = 0, txBytesEnd = 0;
+
+    //  function to read bytes from a file
+    auto readBytes = [&](const std::string &path, long long &bytes) -> bool {
+        std::ifstream file(path);
+        if (!file.is_open()) {
+            std::cerr << "Error opening " << path << std::endl;
+            return false;
+        }
+        file >> bytes;
+        file.close();
+        return true;
+    };
+
+    // Get initial byte counts
+    if (!readBytes(rxPath, rxBytesStart) || !readBytes(txPath, txBytesStart)) {
+        std::string error = "Error reading initial network bytes for interface " + std::string(interface);
+        env->ReleaseStringUTFChars(interfaceName, interface);
+        return env->NewStringUTF(error.c_str());
+    }
+
+    // Wait for 1 second
+    sleep(1);
+
+    // Get byte counts after 1 second
+    if (!readBytes(rxPath, rxBytesEnd) || !readBytes(txPath, txBytesEnd)) {
+        std::string error = "Error reading final network bytes for interface " + std::string(interface);
+        env->ReleaseStringUTFChars(interfaceName, interface);
+        return env->NewStringUTF(error.c_str());
+    }
+
+    // Calculate speed in bytes per second
+    long long rxSpeed = rxBytesEnd - rxBytesStart;
+    long long txSpeed = txBytesEnd - txBytesStart;
+
+    // Construct the output string with network speed information
+    std::ostringstream output;
+    output << "RX Speed: " << rxSpeed << " bytes/sec\n"
+           << "TX Speed: " << txSpeed << " bytes/sec";
+    std::string networkSpeed = output.str();
+
+    env->ReleaseStringUTFChars(interfaceName, interface);
+    return env->NewStringUTF(networkSpeed.c_str());
 }
 
 

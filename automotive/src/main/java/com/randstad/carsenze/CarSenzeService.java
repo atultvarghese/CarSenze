@@ -14,7 +14,7 @@ public class CarSenzeService extends Service {
 
     public static native String memoryInfo();
     public static native String cpuInfo();
-    public static native String networkStat();
+    public static native String getNetworkStats(String interfaceName );
 
     public CarSenzeService() {
     }
@@ -23,7 +23,7 @@ public class CarSenzeService extends Service {
     public IBinder onBind(Intent intent) {
           return Binder;
     }
-    private final IStatsService.Stub Binder= new  IStatsService.Stub(){
+    private final IStatsService.Stub Binder = new IStatsService.Stub() {
 
 
         @Override
@@ -39,7 +39,9 @@ public class CarSenzeService extends Service {
 
         @Override
         public String getNetworkStats() throws RemoteException {
-            return networkStat();
+            return getNetworkStats();
         }
+
+
     };
 }
