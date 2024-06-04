@@ -5,6 +5,9 @@
         android:name="android.hardware.type.automotive"
         android:required="true" />
 
+    <uses-permission android:name="com.android.car.permission.BIND_CAR_APP_SERVICE" />
+
+
     <application
         android:allowBackup="true"
         android:appCategory="audio"
@@ -13,12 +16,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
+
+        <meta-data
+            android:name="androidx.car.app.minCarApiLevel"
+            android:value="1"/>
         <service
             android:name=".CarSenzeService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+        </service>
+        <service
+            android:name=".MainService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.car.app.CarAppService" />
+                <category android:name="androidx.car.app.category.PROJECTION"/>
+            </intent-filter>
+        </service>
 
-        <activity
+        <!--<uses-library
+            android:name="androidx.car.app"
+            android:required="true" />-->
+
+        <!--<activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -26,6 +46,20 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>-->
+
+        <activity
+            android:name="androidx.car.app.activity.CarAppActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="distractionOptimized"
+                android:value="true" />
         </activity>
     </application>
 
