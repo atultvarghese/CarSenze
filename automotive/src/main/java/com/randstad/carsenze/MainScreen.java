@@ -18,19 +18,20 @@ import androidx.car.app.model.Template;
 
 public class MainScreen extends Screen {
     public IStatsService iStatsService;
-    private ServiceConnection serviceConnection = new ServiceConnection(){
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            iStatsService = IStatsService.Stub.asInterface(iBinder);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            iStatsService = null;
-        }
-    };
+    private ServiceConnection serviceConnection;
     public MainScreen(@NonNull CarContext carContext) {
         super(carContext);
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                iStatsService = IStatsService.Stub.asInterface(iBinder);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                iStatsService = null;
+            }
+        };
         carContext.bindService(new Intent(carContext, CarSenzeService.class), serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
